@@ -1,9 +1,20 @@
 import fetch from 'node-fetch';
 import dotenv from "dotenv";
-const API_KEY = process.env.API_KEY_URLSCAN
-console.log(API_KEY)
+import path from "path";
+import { fileURLToPath } from "url";
+
+// Ensure .env is loaded regardless of which directory node is executed from
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
+
+const API_KEY = process.env.API_KEY_URLSCAN;
+console.log("Loaded API_KEY:", API_KEY ? `${API_KEY.slice(0, 8)}...` : "UNDEFINED");
 
 const submit = async (url) => {
+    if (!API_KEY) {
+        throw new Error("Missing API_KEY_URLSCAN in environment variables (.env)");
+    }
+
     const resp = await fetch(
         `https://urlscan.io/api/v1/scan`,
         {
@@ -24,54 +35,73 @@ const submit = async (url) => {
         }
     );
     const data = await resp.json();
-    console.log(data);
     return data;
-}
+};
 
 const wait = (ms) => new Promise((res) => setTimeout(res, ms));
 
 export const getData = async (url) => {
-    // Step 1: Submit
-    const scanId = await submit(url);
-    const id = scanId.uuid;
-    console.log("Scan ID:", id);
+    try {
+        // Step 1: Submit URL to scan
+        const scanResponse = await submit(url);
 
-    // Step 2: Keep retrying until scan is complete
-    for (let i = 0; i < 10; i++) {
-        await wait(5000); // wait 5 seconds before each attempt
+        if (!scanResponse || !scanResponse.uuid) {
+            console.error("URLScan Submission Failed:", scanResponse);
+            return {
+                status: "error",
+                message: scanResponse?.message || "Failed to submit URL to urlscan.io",
+                details: scanResponse
+            };
+        }
 
-        console.log(`Attempt ${i + 1} - Fetching result...`);
+        const id = scanResponse.uuid;
+        console.log("Scan submitted successfully! Scan ID:", id);
 
-        const resp = await fetch(
-            `https://urlscan.io/api/v1/result/${id}/`,
-            {
-                method: "GET",
-                headers: {
-                    "API-Key": API_KEY  // fix: correct header name
+        // Step 2: Keep polling until scan is complete (urlscan usually takes 10-25 seconds)
+        for (let i = 0; i < 12; i++) {
+            await wait(4000); // wait 4 seconds before checking
+
+            console.log(`Attempt ${i + 1} - Fetching result...`);
+
+            const resp = await fetch(
+                `https://urlscan.io/api/v1/result/${id}/`,
+                {
+                    method: "GET",
+                    headers: {
+                        "api-key": API_KEY
+                    }
                 }
+            );
+
+            // If 404, the scan is still running on urlscan.io, wait and retry
+            if (resp.status === 404) {
+                console.log(`Attempt ${i + 1} - Scan still processing, waiting...`);
+                continue;
             }
-        );
 
-        // If 404 means scan not ready yet, keep waiting
-        if (resp.status === 404) {
-            console.log(`Attempt ${i + 1} - Scan not ready yet, waiting...`);
-            continue;
+            // If success
+            if (resp.status === 200) {
+                const data = await resp.json();
+                console.log("urlscan complete successfully!");
+                return data;
+            }
+
+            // If rate limited or other error
+            if (resp.status === 429) {
+                console.warn("URLScan Rate limit reached, retrying...");
+                await wait(5000);
+            }
         }
 
-        // If success
-        if (resp.status === 200) {
-            const data = await resp.json();
-            console.log("Scan complete:", data);
-            return data;
-        }
+        console.log("Scan did not complete in time");
+        return { status: "pending", uuid: id };
+    } catch (err) {
+        console.error("URLScan error:", err.message);
+        return { status: "error", message: err.message };
     }
-
-    console.log("Scan did not complete in time");
-    return null;
 };
-getData("https://testsafebrowsing.appspot.com/s/malware.html")
 
-
-
-
-//checking in later 
+// Test if executed directly
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+    getData("https://testsafebrowsing.appspot.com/s/malware.html");
+} 

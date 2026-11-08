@@ -15,14 +15,14 @@ const allthreatIntelligence = async (url) => {
     const getDataData = await getData(url)
     const checkURLData = await checkURL(url)
     const result = {
-        checkUrlData,
+        // checkUrlData,
         checkMcfeeData,
         detectSuspiciousURLData,
         phiislinkData,
         getDataData,
         checkURLData
     }
-    console.log(result)
+    // console.log(result)
     return result
 }
 

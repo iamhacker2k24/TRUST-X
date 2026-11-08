@@ -80,9 +80,25 @@ const featchWebs = {
     }
 }
 
+const threatIntelligenceInfo = {
+    type: "function",
+    name: "allthreatIntelligence",
+    description: "",
+    parameters: {
+        type: Type.OBJECT,
+        properties: {
+            coin: {
+                type: Type.STRING,
+                description: ""
+            }
+        },
+        require: ['websiteUrl']
+    }
+}
 
 
 
 
 
-export const allFn = [AllDomainInfos,sslInfos,webSearch,webPageExtractors,featchWebs];
+
+export const allFn = [AllDomainInfos, sslInfos, webSearch, webPageExtractors, featchWebs, threatIntelligenceInfo];

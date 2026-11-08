@@ -143,14 +143,15 @@ export const checkMcAfee = async (input) => {
             timestamp: new Date().toISOString(),
         };
 
-        console.log("=========================================");
-        console.log(`McAfee Target   : ${result.target}`);
-        console.log(`Result Status   : ${result.status}`);
-        console.log(`Risk Level      : ${result.riskLevel}`);
-        console.log(`URL Status      : ${result.urlStatus}`);
-        console.log(`Categories      : ${result.categories.join(", ")}`);
-        console.log(`Malicious       : ${result.isMalicious}`);
-        console.log("=========================================");
+        // console.log("=========================================");
+        // console.log(`McAfee Target   : ${result.target}`);
+        // console.log(`Result Status   : ${result.status}`);
+        // console.log(`Risk Level      : ${result.riskLevel}`);
+        // console.log(`URL Status      : ${result.urlStatus}`);
+        // console.log(`Categories      : ${result.categories.join(", ")}`);
+        // console.log(`Malicious       : ${result.isMalicious}`);
+        // console.log("=========================================");
+        console.log("macfee done")
 
         return result;
     } catch (error) {

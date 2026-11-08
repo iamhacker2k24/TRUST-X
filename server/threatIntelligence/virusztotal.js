@@ -1,5 +1,12 @@
-import axios from "axios"
+import axios from "axios";
 import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
+
+// Ensure .env is loaded regardless of invocation directory
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
+
 const API_KEY = process.env.VIRUSSZTOTAL_API_KEY;
 
 
@@ -67,15 +74,16 @@ export const checkURL = async (url) => {
         const stats = result.stats;
         const threat = stats.malicious > 0 ? "MALICIOUS" : stats.suspicious > 0 ? "SUSPICIOUS" : "CLEAN";
 
-        console.log("=".repeat(45));
-        console.log(`URL         : ${url}`);
-        console.log(`Result      : ${threat}`);
-        console.log(`Malicious   : ${stats.malicious}`);
-        console.log(`Suspicious  : ${stats.suspicious}`);
-        console.log(`Harmless    : ${stats.harmless}`);
-        console.log(`Undetected  : ${stats.undetected}`);
-        console.log("=".repeat(45));
+        // console.log("=".repeat(45));
+        // console.log(`URL         : ${url}`);
+        // console.log(`Result      : ${threat}`);
+        // console.log(`Malicious   : ${stats.malicious}`);
+        // console.log(`Suspicious  : ${stats.suspicious}`);
+        // console.log(`Harmless    : ${stats.harmless}`);
+        // console.log(`Undetected  : ${stats.undetected}`);
+        // console.log("=".repeat(45));
 
+        console.log("virusztotal done")
         return { url, threat, stats };
 
     } catch (error) {

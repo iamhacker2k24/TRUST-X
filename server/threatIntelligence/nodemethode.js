@@ -102,6 +102,7 @@ export function detectSuspiciousURL(input) {
         status = "suspicious";
     }
 
+    console.log("node done")
     return {
         url: parsed.href,
         domain: hostname,
@@ -113,7 +114,7 @@ export function detectSuspiciousURL(input) {
 
 // Test
 
-//this is not corect of bets approach ok just for intitial 
-console.log(
-    detectSuspiciousURL("http://example.xyz")
-);
+// //this is not corect of bets approach ok just for intitial
+// console.log(
+//     detectSuspiciousURL("http://example.xyz")
+// );

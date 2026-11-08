@@ -10,6 +10,7 @@
   "type": "module",
   "dependencies": {
     "@google-cloud/web-risk": "^6.2.0",
+    "@google/genai": "^3.0.0",
     "axios": "^1.21.0",
     "dotenv": "^18.0.9",
     "exa-js": "^2.28.0",

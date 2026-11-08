@@ -54,7 +54,7 @@ export default function WelcomeHero({ onSelectCapability }) {
           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
           Phase 9 IPFS CID & Blockchain Hash
         </span>
-      </div>
+      </div>npm install exa-js dotenv
     </div>
   );
 }

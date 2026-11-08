@@ -1,6 +1,7 @@
 import dns from "node:dns/promises";
 
 export const getAddress = async (domain) => {
+    console.log("getting all ip info 1pv4 and ipv6 ")
     dns.setServers(["8.8.8.8", "1.1.1.1", "8.8.4.4"]);
 
     const results = { ipv4: [], ipv6: [] };
@@ -20,6 +21,5 @@ export const getAddress = async (domain) => {
     } catch (error) {
         console.log("IPv6 lookup failed:", error.code);
     }
-
     return results;
 };

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import WelcomeHero from "./components/WelcomeHero";
@@ -7,7 +7,7 @@ import AuditResultView from "./components/AuditResultView";
 import { generateAuditReport } from "./utils/auditEngine";
 
 export default function App() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // Default open on desktop
   const [currentAudit, setCurrentAudit] = useState(null);
   const [userQuery, setUserQuery] = useState("");
   const [queryType, setQueryType] = useState("url");
@@ -40,6 +40,10 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const handleClearHistory = () => {
+    setScanHistory([]);
+  };
+
   const handleSelectCapability = (type) => {
     setActiveTab(type);
   };
@@ -54,7 +58,7 @@ export default function App() {
       const report = generateAuditReport(input, type);
       setCurrentAudit(report);
       setScanHistory((prev) =>
-        [report, ...prev.filter((p) => p.id !== report.id)].slice(0, 20),
+        [report, ...prev.filter((p) => p.id !== report.id)].slice(0, 20)
       );
       setIsLoading(false);
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -63,12 +67,14 @@ export default function App() {
 
   return (
     <div className="flex h-screen bg-[#0d0f17] text-slate-100 overflow-hidden font-sans">
-      {/* 1. Left Collapsible Sidebar */}
+      {/* 1. Left Collapsible / Minimized Sidebar Rail (ChatGPT style) */}
       <Sidebar
         isOpen={isSidebarOpen}
+        onToggle={() => setIsSidebarOpen((prev) => !prev)}
         onClose={() => setIsSidebarOpen(false)}
         scanHistory={scanHistory}
         onSelectHistoryItem={handleSelectHistoryItem}
+        onClearHistory={handleClearHistory}
         activeScanId={currentAudit?.id}
         onNewAudit={handleNewAudit}
       />

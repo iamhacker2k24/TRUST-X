@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 import Exa from "exa-js";
-const exa = new Exa('21f669cd-76ee-42b4-aa3b-735ac05c240e');
+const exa = new Exa('');
 
 
 const webpageextrator = async ([url]) => {

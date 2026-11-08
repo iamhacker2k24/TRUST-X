@@ -1,11 +1,11 @@
 import { WebRiskServiceClient } from '@google-cloud/web-risk'
-
+import dotenv from "dotenv";
 // Instantiates a client
 const client = new WebRiskServiceClient({
-    apiKey: ""
+    apiKey: process.env.GOOGLE_API_KEY
 });
 
-async function checkUrl(urlToCheck) {
+export async function checkUrl(urlToCheck) {
     const request = {
         uri: urlToCheck,
         threatTypes: ['MALWARE', 'SOCIAL_ENGINEERING', 'UNWANTED_SOFTWARE'],
@@ -19,13 +19,13 @@ async function checkUrl(urlToCheck) {
             console.log(`⚠️ Threat detected! Type: ${response.threat.threatTypes}`);
         } else {
             console.log('✅ URL is clean.');
-        }
+        } return response.threat.threatTypes
     } catch (error) {
         console.error('Error checking URL:', error);
     }
 }
 
-checkUrl('http://www.eicar.org/download/eicar.com');
+// checkUrl('http://www.eicar.org/download/eicar.com');
 
 
 //check in later 

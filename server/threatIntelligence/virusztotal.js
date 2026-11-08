@@ -1,6 +1,6 @@
 import axios from "axios"
-
-const API_KEY = "";
+import dotenv from "dotenv";
+const API_KEY = process.env.VIRUSSZTOTAL_API_KEY;
 
 
 const wait = (ms) => new Promise((res) => setTimeout(res, ms));
@@ -31,7 +31,7 @@ const getResult = async (scanId) => {
     return res.data.data;
 };
 
-const checkURL = async (url) => {
+export const checkURL = async (url) => {
     try {
         console.log(`Submitting URL: ${url}`);
 
@@ -89,4 +89,4 @@ const checkURL = async (url) => {
     }
 };
 
-checkURL("https://testsafebrowsing.appspot.com/s/malware.html");
+// checkURL("https://testsafebrowsing.appspot.com/s/malware.html");

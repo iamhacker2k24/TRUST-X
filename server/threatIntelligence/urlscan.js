@@ -1,5 +1,7 @@
 import fetch from 'node-fetch';
-const API_KEY_URLSCAN = ''
+import dotenv from "dotenv";
+const API_KEY = process.env.API_KEY_URLSCAN
+console.log(API_KEY)
 
 const submit = async (url) => {
     const resp = await fetch(
@@ -8,7 +10,7 @@ const submit = async (url) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'api-key': API_KEY_URLSCAN
+                'api-key': API_KEY
             },
             body: JSON.stringify({
                 url: url,
@@ -28,7 +30,7 @@ const submit = async (url) => {
 
 const wait = (ms) => new Promise((res) => setTimeout(res, ms));
 
-const getData = async (url) => {
+export const getData = async (url) => {
     // Step 1: Submit
     const scanId = await submit(url);
     const id = scanId.uuid;
@@ -45,7 +47,7 @@ const getData = async (url) => {
             {
                 method: "GET",
                 headers: {
-                    "API-Key": API_KEY_URLSCAN  // fix: correct header name
+                    "API-Key": API_KEY  // fix: correct header name
                 }
             }
         );

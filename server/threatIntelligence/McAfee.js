@@ -176,4 +176,4 @@ export const checkMcAfee = async (input) => {
 
 // Allow CLI execution with custom URL: node McAfee.js <url>
 const targetUrl = process.argv[2] || "https://testsafebrowsing.appspot.com/s/malware.html";
-checkMcAfee(targetUrl);
+// checkMcAfee(targetUrl);

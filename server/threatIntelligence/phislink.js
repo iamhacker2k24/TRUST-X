@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const phiislink = async () => {
+export const phiislink = async () => {
     try {
         const res = await axios.get("https://checkurl.phishtank.com/checkurl/https://verify-cs2.com/")
         console.log(res)

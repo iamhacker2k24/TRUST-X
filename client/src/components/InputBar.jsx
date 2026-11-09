@@ -17,7 +17,12 @@ export default function InputBar({ onRunAudit, isLoading, activeTab, setActiveTa
     if (e) e.preventDefault();
     if (!inputValue.trim() || isLoading) return;
 
-    onRunAudit(inputValue.trim(), activeTab);
+    const query = inputValue.trim();
+    setInputValue("");
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+    }
+    onRunAudit(query, activeTab);
   };
 
   const handleKeyDown = (e) => {

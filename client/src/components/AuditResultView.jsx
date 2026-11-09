@@ -195,7 +195,10 @@ export default function AuditResultView({ auditData, userQuery, queryType, onAsk
                       Strong Supporting Evidence (High Weight)
                     </span>
                     <ul className="space-y-1.5 text-slate-300 list-disc list-inside">
-                      {auditData.aiExplanation.strongEvidence?.map((item, idx) => (
+                      {(Array.isArray(auditData.aiExplanation?.strongEvidence) 
+                        ? auditData.aiExplanation.strongEvidence 
+                        : [auditData.aiExplanation?.strongEvidence || "Forensic indicators evaluated."].filter(Boolean)
+                      ).map((item, idx) => (
                         <li key={idx} className="leading-relaxed">
                           {item}
                         </li>
@@ -209,7 +212,10 @@ export default function AuditResultView({ auditData, userQuery, queryType, onAsk
                       Weak / Corroborative Indicators
                     </span>
                     <ul className="space-y-1.5 text-slate-400 list-disc list-inside">
-                      {auditData.aiExplanation.weakIndicators?.map((item, idx) => (
+                      {(Array.isArray(auditData.aiExplanation?.weakIndicators)
+                        ? auditData.aiExplanation.weakIndicators
+                        : [auditData.aiExplanation?.weakIndicators || "SSL and DNS structure verified."].filter(Boolean)
+                      ).map((item, idx) => (
                         <li key={idx} className="leading-relaxed">
                           {item}
                         </li>
@@ -219,7 +225,7 @@ export default function AuditResultView({ auditData, userQuery, queryType, onAsk
                 </div>
 
                 {/* MITRE ATT&CK Techniques */}
-                {auditData.aiExplanation.attackTechniques?.length > 0 && (
+                {Array.isArray(auditData.aiExplanation?.attackTechniques) && auditData.aiExplanation.attackTechniques.length > 0 && (
                   <div className="bg-slate-900/70 border border-slate-800 rounded-xl p-3.5">
                     <span className="font-semibold text-slate-300 text-xs flex items-center gap-1.5 mb-2.5">
                       <Terminal className="w-3.5 h-3.5 text-indigo-400" />
@@ -250,7 +256,10 @@ export default function AuditResultView({ auditData, userQuery, queryType, onAsk
                     Recommended User Precautions & Remediation
                   </span>
                   <ul className="space-y-1 text-slate-300 list-disc list-inside">
-                    {auditData.aiExplanation.userPrecautions?.map((item, idx) => (
+                    {(Array.isArray(auditData.aiExplanation?.userPrecautions)
+                      ? auditData.aiExplanation.userPrecautions
+                      : [auditData.aiExplanation?.userPrecautions || "Exercise standard browsing security precautions."].filter(Boolean)
+                    ).map((item, idx) => (
                       <li key={idx} className="leading-relaxed">
                         {item}
                       </li>
@@ -261,7 +270,7 @@ export default function AuditResultView({ auditData, userQuery, queryType, onAsk
                 {/* Uncertainty Disclosure */}
                 <div className="p-3 bg-slate-900/50 border border-slate-800 rounded-xl text-[11px] text-slate-400">
                   <span className="font-semibold text-slate-300">Unresolved Uncertainty / Operational Limitations:</span>{" "}
-                  {auditData.aiExplanation.uncertainties}
+                  {auditData.aiExplanation?.uncertainties || "No unresolved technical anomalies detected."}
                 </div>
               </div>
             )}

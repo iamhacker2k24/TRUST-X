@@ -351,25 +351,6 @@ export default function Sidebar({
             )}
           </div>
 
-          {/* SECTION: Projects */}
-          <div>
-            <div className="px-3 mb-1.5 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-              Projects
-            </div>
-
-            <div className="space-y-0.5">
-              <div className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-slate-800/60 text-[13px] text-slate-400 hover:text-white cursor-pointer transition">
-                <Folder className="w-4 h-4 text-indigo-400" />
-                <span className="truncate">phishing_watch</span>
-              </div>
-
-              <div className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-slate-800/60 text-[13px] text-slate-400 hover:text-white cursor-pointer transition">
-                <Folder className="w-4 h-4 text-purple-400" />
-                <span className="truncate">threat_intel_pipeline</span>
-              </div>
-            </div>
-          </div>
-
           {/* SECTION: Recents */}
           <div>
             <div className="flex items-center justify-between px-3 mb-1.5 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">

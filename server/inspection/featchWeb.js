@@ -1,30 +1,32 @@
-import axios from "axios"
-
-// const featchWebsite = async () => {
-
-//     const res = await axios.get("")
-//     console.log(res.data)
-
-// }
-
-
-
-// featchWebsite()
-
 import { chromium } from "playwright";
 
-const browser = await chromium.launch({
-    headless: true
-});
+export const featchWeb = async (websiteUrl) => {
+    let browser = null;
+    try {
+        browser = await chromium.launch({
+            headless: true
+        });
 
-const page = await browser.newPage();
+        const page = await browser.newPage();
+        await page.goto(websiteUrl, { timeout: 15000, waitUntil: "domcontentloaded" });
 
-await page.goto("https://itz-dev.vercel.app/");
+        const title = await page.title();
+        const content = await page.content();
 
-console.log(await page.title());
-
-console.log(await page.content());
-
-await page.waitForTimeout(10000);
-
-await browser.close();
+        return {
+            title,
+            contentSnippet: content.slice(0, 3000),
+            status: "success"
+        };
+    } catch (err) {
+        console.error("Playwright inspection error:", err.message);
+        return {
+            status: "error",
+            message: err.message
+        };
+    } finally {
+        if (browser) {
+            await browser.close();
+        }
+    }
+};

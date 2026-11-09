@@ -3,7 +3,7 @@ import { getAddress } from "./getIp.js";
 import { getSubdomain } from "./getSubdomain.js";
 
 
-const AllDomainInfo = async (url) => {
+export const AllDomainInfo = async (url) => {
     try {
         console.log("all ip detils featc working...........")
         const ipInfo = await getAddress(url)
@@ -18,4 +18,4 @@ const AllDomainInfo = async (url) => {
     }
 }
 
-AllDomainInfo("google.com")
+// AllDomainInfo("google.com")

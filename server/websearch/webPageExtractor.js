@@ -1,25 +1,25 @@
 import dotenv from "dotenv";
 dotenv.config();
 import Exa from "exa-js";
-const exa = new Exa('');
+const exa = new Exa(process.env.EXA_API_KEY);
 
-
-const webpageextrator = async ([url]) => {
+export const webpageextrator = async (url) => {
     try {
+        const targetUrl = Array.isArray(url) ? url : [url];
         const result = await exa.getContents(
-            [url],
+            targetUrl,
             {
                 highlights: {
-                    query: "enterprise plan features and pricing",
+                    query: "about company services contact features",
                 },
             },
         );
 
-        console.log(result.results[0].highlights);
-        return result.results[0].highlights
-
+        return result?.results?.[0]?.highlights || [];
     } catch (error) {
-        console.log(error.message)
+        console.error("Exa extractor error:", error.message);
+        return [];
     }
-}
-webpageextrator(["https://itz-dev.vercel.app/"])
+};
+
+// webpageextrator(["https://itz-dev.vercel.app/"])

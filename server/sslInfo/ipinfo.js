@@ -36,4 +36,4 @@ export const getASNInfo = async (domain) => {
     }
 };
 
-getASNInfo("google.com");
+// getASNInfo("google.com");

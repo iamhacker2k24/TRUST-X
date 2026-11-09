@@ -48,21 +48,47 @@ export default function App() {
     setActiveTab(type);
   };
 
-  const handleRunAudit = (input, type) => {
+  const handleRunAudit = async (input, type) => {
     setUserQuery(input);
     setQueryType(type);
     setIsLoading(true);
 
-    // Run dynamic evaluation using the evidential audit engine
-    setTimeout(() => {
+    try {
+      const apiBase = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+      const response = await fetch(`${apiBase}/api/audit`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          target: input,
+          type,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Server returned HTTP ${response.status}`);
+      }
+
+      const result = await response.json();
+      const report = result.data || result;
+
+      setCurrentAudit(report);
+      setScanHistory((prev) =>
+        [report, ...prev.filter((p) => p.id !== report.id)].slice(0, 20)
+      );
+    } catch (err) {
+      console.warn("Backend API unreachable, using local fallback evaluator:", err.message);
+      // Graceful fallback if backend is starting or offline
       const report = generateAuditReport(input, type);
       setCurrentAudit(report);
       setScanHistory((prev) =>
         [report, ...prev.filter((p) => p.id !== report.id)].slice(0, 20)
       );
+    } finally {
       setIsLoading(false);
       window.scrollTo({ top: 0, behavior: "smooth" });
-    }, 750);
+    }
   };
 
   return (

@@ -6,25 +6,27 @@ import { getData } from "./urlscan.js";
 import { checkURL } from "./virusztotal.js";
 
 
-const allthreatIntelligence = async (url) => {
-    console.log("working")
-    // const checkUrlData = await checkUrl(url)
-    const checkMcfeeData = await checkMcAfee(url)
-    const detectSuspiciousURLData = await detectSuspiciousURL(url)
-    const phiislinkData = await phiislink(url)
-    const getDataData = await getData(url)
-    const checkURLData = await checkURL(url)
-    const result = {
-        // checkUrlData,
-        checkMcfeeData,
-        detectSuspiciousURLData,
-        phiislinkData,
-        getDataData,
-        checkURLData
-    }
-    // console.log(result)
-    return result
-}
+export const allthreatIntelligence = async (url) => {
+    console.log("[ThreatIntel] Initiating multi-vector scans for:", url);
+    try {
+        const detectSuspiciousURLData = await detectSuspiciousURL(url);
+        const checkMcfeeData = await checkMcAfee(url).catch(err => ({ status: "error", message: err.message }));
+        const getDataData = await getData(url).catch(err => ({ status: "error", message: err.message }));
+        const checkURLData = await checkURL(url).catch(err => ({ status: "error", message: err.message }));
 
-allthreatIntelligence("https://testsafebrowsing.appspot.com/s/malware.html")
+        const result = {
+            heuristics: detectSuspiciousURLData,
+            mcAfee: checkMcfeeData,
+            urlScan: getDataData,
+            virusTotal: checkURLData
+        };
+        return result;
+    } catch (err) {
+        console.error("[ThreatIntel] Scan error:", err.message);
+        return { error: err.message };
+    }
+};
+
+// if directly run
+// allthreatIntelligence("https://testsafebrowsing.appspot.com/s/malware.html")
 

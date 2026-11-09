@@ -5,20 +5,22 @@ import Exa from "exa-js";
 const api = process.env.EXA_API_KEY
 const exa = new Exa(api);
 
-const webSerach = async (ques) => {
-    const result = await exa.search(ques, {
-        type: "auto",
-        numResults: 10,
-        contents: {
-            highlights: {
-                maxCharacters: 2000
+export const webSerach = async (ques) => {
+    try {
+        const result = await exa.search(ques, {
+            type: "auto",
+            numResults: 5,
+            contents: {
+                highlights: {
+                    maxCharacters: 2000
+                }
             }
-        }
-    });
+        });
+        return result.results || [];
+    } catch (err) {
+        console.error("Exa search error:", err.message);
+        return [];
+    }
+};
 
-    console.log(result.results)
-
-}
-
-
-webSerach("what is  ai ")
+// webSerach("what is ai")

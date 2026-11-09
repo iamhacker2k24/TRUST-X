@@ -9,6 +9,6 @@ export const phiislink = async () => {
     }
 }
 
-phiislink(0)
+// phiislink(0)
 
 //sorry curent registarion is not implemet so we can not implimented this 

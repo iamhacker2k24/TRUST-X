@@ -3,7 +3,7 @@ import { checkSSL } from "./ssl.js";
 
 
 
-const allipSslinfo = async (domain) => {
+export const allipSslinfo = async (domain) => {
     const sslInfo = await checkSSL(domain)
     const getASN = await getASNInfo(domain)
     const result = { sslInfo, getASN }
@@ -11,6 +11,4 @@ const allipSslinfo = async (domain) => {
     return result
 }
 
-
-
-allipSslinfo("github.com")
+// allipSslinfo("github.com")
